@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MY TO-DO LIST</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="app">
+    <h1>Task Dashboard</h1>
+
+    <div class="dashboard">
+        <div class="ring-box">
+            <svg>
+                <circle class="bg-c" cx="40" cy="40" r="28"></circle>
+                <circle id="ring" class="prog-c" cx="40" cy="40" r="28"></circle>
+            </svg>
+            <span class="perc" id="percVal">0%</span>
+        </div>
+        <div class="stats">
+            <div class="stat-item"><h3 id="totalVal">0</h3><p>Total</p></div>
+            <div class="stat-item"><h3 id="pendingVal" style="color:#f59e0b">0</h3><p>Pending</p></div>
+            <div class="stat-item"><h3 id="doneVal" style="color:var(--success)">0</h3><p>Done</p></div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <input type="text" id="taskInput" placeholder="Add a new task...">
+        <input type="date" id="dateInput">
+        <button id="addBtn" onclick="addTask()">Add</button>
+    </div>
+
+    <ul id="list"></ul>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
