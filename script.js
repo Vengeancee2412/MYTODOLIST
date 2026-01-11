@@ -1,4 +1,5 @@
 let tasks = [];
+let editingIndex = null;
 const ring = document.getElementById('ring');
 const C = 176; 
 
@@ -17,6 +18,18 @@ function draw() {
         // this will check if it is late
         const isLate = t.date && t.date < today && !t.done;
         if (isLate) hasOverdue = true;
+
+        // check if this task is being edited
+        if (editingIndex === i) {
+            return `
+            <li class="editing">
+                <input type="text" id="editInput" value="${t.text}" style="flex:1; padding:8px; border:2px solid var(--accent); border-radius:4px;">
+                <input type="date" id="editDateInput" value="${t.date || ''}" style="padding:8px; border:2px solid var(--accent); border-radius:4px;">
+                <button class="save" onclick="saveEdit(${i})">✓</button>
+                <button class="cancel" onclick="cancelEdit()">✕</button>
+            </li>
+            `;
+        }
 
         return `
         <li class="${t.done ? 'done' : ''} ${isLate ? 'overdue' : ''}">
@@ -47,6 +60,14 @@ function draw() {
     } else {
         ring.style.stroke = 'var(--accent)';
     }
+
+    // focus on edit input if editing
+    if (editingIndex !== null) {
+        setTimeout(() => {
+            const editInput = document.getElementById('editInput');
+            if (editInput) editInput.focus();
+        }, 0);
+    }
 }
 
 function addTask() {
@@ -72,15 +93,25 @@ function remove(i) {
 }
 
 function editTask(i) {
-    const newText = prompt('Edit task:', tasks[i].text);
-    const newDate = prompt('Edit date (YYYY-MM-DD):', tasks[i].date);
+    editingIndex = i;
+    draw();
+}
+
+function saveEdit(i) {
+    const newText = document.getElementById('editInput').value.trim();
+    const newDate = document.getElementById('editDateInput').value;
     
-    if (newText !== null && newText.trim()) {
-        tasks[i].text = newText.trim();
-    }
-    if (newDate !== null) {
+    if (newText) {
+        tasks[i].text = newText;
         tasks[i].date = newDate;
     }
+    
+    editingIndex = null;
+    draw();
+}
+
+function cancelEdit() {
+    editingIndex = null;
     draw();
 }
 
